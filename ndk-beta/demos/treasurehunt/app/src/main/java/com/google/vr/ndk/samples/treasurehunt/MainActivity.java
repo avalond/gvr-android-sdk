@@ -17,7 +17,6 @@ package com.google.vr.ndk.samples.treasurehunt;
 
 import com.google.vr.ndk.base.AndroidCompat;
 import com.google.vr.ndk.base.GvrLayout;
-import com.google.vr.ndk.base.GvrUiLayout;
 
 import android.app.Activity;
 import android.content.Context;
@@ -72,7 +71,7 @@ public class MainActivity extends Activity {
     // Add the GLSurfaceView to the GvrLayout.
     GLSurfaceView glSurfaceView = new GLSurfaceView(this);
     glSurfaceView.setEGLContextClientVersion(2);
-    glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 8);
+    glSurfaceView.setEGLConfigChooser(8, 8, 8, 0, 0, 0);
     glSurfaceView.setPreserveEGLContextOnPause(true);
     glSurfaceView.setRenderer(
         new GLSurfaceView.Renderer() {
@@ -104,8 +103,16 @@ public class MainActivity extends Activity {
         });
     gvrLayout.setPresentationView(glSurfaceView);
 
-    // Add the VR UI layout to the GvrLayout.
-    gvrLayout.addView(new GvrUiLayout(this));
+    // Enable and configure the back button in the UI layout.
+    gvrLayout
+        .getUiLayout()
+        .setBackButtonListener(
+            new Runnable() {
+              @Override
+              public void run() {
+                onBackPressed();
+              }
+            });
 
     // Add the GvrLayout to the View hierarchy.
     setContentView(gvrLayout);
